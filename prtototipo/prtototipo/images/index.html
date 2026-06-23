@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Canvas LMS - Mobile AI Integration Prototype v8</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="phone-wrapper with-local-nav" id="phone-container">
+        <div class="status-bar">
+            <div id="status-time">3:46 <i class="fas fa-comment-alt" style="font-size:10px;"></i></div>
+            <div class="status-icons">
+                <i class="fas fa-volume-mute"></i>
+                <i class="fas fa-signal"></i>
+                <span id="status-pct" style="font-size:11px; margin-left:3px;">75%</span>
+            </div>
+        </div>
+
+        <div class="app-header" id="dynamic-header">
+            <div class="header-left">
+                <div id="header-left-button" onclick="handleHeaderBack()">
+                    <i class="fas fa-bars" id="icon-hamburger" style="display: block;"></i>
+                    <i class="fas fa-arrow-left" id="icon-back-arrow" style="display: none;"></i>
+                </div>
+                
+                <div class="header-title">
+                    <h1 id="header-title-text">Dashboard</h1>
+                    <span id="header-subtitle-text"></span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <i class="fas fa-filter" id="header-filter-icon" style="display: none; font-size: 15px; margin-right: 5px; cursor: pointer;" onclick="alert('Simulation: Filter items')"></i>
+                <i class="fas fa-search" id="header-search-icon" style="display: none; font-size: 15px; margin-right: 5px; cursor: pointer;" onclick="alert('Simulation: Search in content')"></i>
+                <i class="fas fa-ellipsis-v" id="header-action-dots" style="cursor: pointer;" onclick="alert('Simulation: More options')"></i>
+            </div>
+        </div>
+
+        <div class="view-container" id="main-view-container">
+
+            <div id="view-dashboard" class="app-view active-view">
+                <div class="section-title-tablero">
+                    <span>Courses</span>
+                    <a href="#" class="all-courses-link" onclick="alert('Simulation: View all courses')">All courses</a>
+                </div>
+                
+                <div class="course-grid">
+                    <div class="course-card" onclick="openCourseGrades()">
+                        <div class="course-banner">
+                            <span class="course-badge-pct">100 %</span>
+                            <i class="fas fa-ellipsis-v" style="align-self: flex-end; color: white; margin-top: -20px; cursor: pointer;" onclick="event.stopPropagation(); alert('Course options');"></i>
+                            <div class="course-banner-title">Human Dignity Awareness</div>
+                        </div>
+                        <div class="course-info-block">
+                            <div class="course-info-title">Human Dignity Awareness - P...</div>
+                            <div class="course-info-code">NAL.DIGNHUMPROF.2013.1</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-grades-list" class="app-view">
+                <div class="toggle-container">
+                    <span>Based on graded assignments</span>
+                    <label class="switch">
+                        <input type="checkbox" checked onchange="alert('Simulation: Assignment filter modified')">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="toggle-container" style="margin-bottom: 12px;">
+                    <span>Show hypothetical score</span>
+                    <label class="switch">
+                        <input type="checkbox" onchange="alert('Simulation: What-If score calculation mode activated')">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="section-label">Assignments with no due date</div>
+                
+                <div class="assignment-list">
+                    <div class="assignment-item" onclick="openTaskDetails()" style="background: var(--canvas-selected); border-left: 3px solid var(--canvas-pink);">
+                        <div class="assignment-info">
+                            <div class="assignment-name" style="font-weight: bold;">Final Block Grade</div>
+                            <div class="assignment-due"><i class="fas fa-check-circle" style="color:#4CAF50; font-size:11px;"></i> Graded • No due date</div>
+                        </div>
+                        <div class="assignment-score">
+                            <span class="score-num">93.6</span>
+                            <span class="score-total">/100</span>
+                        </div>
+                    </div>
+
+                    <div class="assignment-item" onclick="alert('Simulation: Opening Activity 2 (No grade available)')">
+                        <div class="assignment-info">
+                            <div class="assignment-name">Activity 2: Understanding Object Art / Installation Activity</div>
+                            <div class="assignment-due">No due date</div>
+                        </div>
+                        <div class="assignment-score"><span class="score-num" style="color:var(--text-muted);">-</span><span class="score-total">/100</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-task-details" class="app-view">
+                <div class="section-title-tablero" style="font-size: 18px; margin-bottom: 12px;">
+                    <span>Final Block Grade</span>
+                </div>
+                
+                <div class="grade-card">
+                    <div class="grade-card-top">
+                        <span style="font-weight: bold;">Grade</span>
+                        <span style="color: #4FC3F7; cursor: pointer;" onclick="alert('Simulation: Opening submission details, rubric, and teacher comments')">Submission & Comments <i class="fas fa-chevron-right" style="font-size:10px;"></i></span>
+                    </div>
+                    
+                    <div class="grade-circle-container">
+                        <svg class="grade-circle-svg" width="110" height="110">
+                            <circle class="grade-circle-bg" cx="55" cy="55" r="45"></circle>
+                            <circle class="grade-circle-progress" cx="55" cy="55" r="45"></circle>
+                        </svg>
+                        <div class="grade-circle-text">
+                            <span class="score">93.6</span>
+                            <span class="label">Points</span>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: right; font-size: 13px; color: var(--text-muted); margin-top: -10px;">
+                        Out of 100 pts
+                    </div>
+                    
+                    <div class="range-slider-mock">
+                        <div class="range-slider-fill"></div>
+                        <div class="range-slider-dot"></div>
+                    </div>
+                    <div class="grade-range-text">
+                        <span>Low: 88.1</span>
+                        <span>Mean: 92.6</span>
+                        <span>High: 95.8</span>
+                    </div>
+                </div>
+
+                <div class="learning-insights-card">
+                    <div class="insights-header-row">
+                        <div class="insights-main-title">
+                            <i class="fas fa-wand-magic-sparkles"></i>
+                            <span>Learning Insights</span>
+                        </div>
+                        <div class="insights-score-badge">93.6 / 100</div>
+                    </div>
+
+                    <div class="insights-section-label">Areas to work on</div>
+                    
+                    <div class="insights-pills-stack">
+                        <div class="insight-pill-item pill-red">
+                            <div class="pill-dot"></div>
+                            <div class="pill-content">
+                                <h4>Theoretical justification</h4>
+                                <p>Strengthen the aesthetic framework in your final argumentation.</p>
+                            </div>
+                        </div>
+
+                        <div class="insight-pill-item pill-yellow">
+                            <div class="pill-dot"></div>
+                            <div class="pill-content">
+                                <h4>Contemporary references</h4>
+                                <p>Explore more recent spatial installation artists.</p>
+                            </div>
+                        </div>
+
+                        <div class="insight-pill-item pill-green">
+                            <div class="pill-dot"></div>
+                            <div class="pill-content">
+                                <h4>Bibliographic consistency</h4>
+                                <p>Good technical consistency — keep this up.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="insights-section-label">Suggested Resources</div>
+                    <div class="suggested-resources-block">
+                        <div class="resources-buttons-row">
+                            <a href="#" class="resource-btn" onclick="event.preventDefault(); alert('Opening Space & Place PDF');">
+                                <i class="far fa-file-pdf"></i> Space & Place.pdf
+                            </a>
+                            <a href="#" class="resource-btn" onclick="event.preventDefault(); alert('Opening Eliasson Document video');">
+                                <i class="fas fa-play-circle"></i> Eliasson doc
+                            </a>
+                            <a href="#" class="resource-btn" onclick="event.preventDefault(); alert('Opening Forum link');">
+                                <i class="far fa-comments"></i> Forum
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="next-step-actionable" onclick="openCourseModules()">
+                        <div class="next-step-text">
+                            Review Block 2 key texts before your next on-site evaluation.
+                        </div>
+                        <div class="next-step-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-meta-section">
+                    <div class="task-meta-title">Due date</div>
+                    <div class="task-meta-value">No due date</div>
+                </div>
+
+                <div class="reminder-row" onclick="alert('Simulation: Adding reminder to the device local calendar...')">
+                    <i class="fas fa-plus"></i>
+                    <div class="task-meta-value" style="font-size:13px;">Add due date reminder notifications for this task on this device.</div>
+                </div>
+
+                <div class="task-meta-section">
+                    <div class="task-meta-title">Submission types</div>
+                    <div class="task-meta-value">No Submissions</div>
+                </div>
+
+                <div class="task-meta-section" style="margin-top: 20px;">
+                    <div class="task-meta-title">Description</div>
+                    <button class="light-mode-btn" onclick="alert('Simulation: Switching visual palette to Light Mode...')">
+                        <i class="fas fa-circle-half-stroke"></i> Switch to light mode
+                    </button>
+                    
+                    <div class="legal-notice">
+                        This is an activity used by the evaluation plan. DO NOT EDIT OR CHANGE THE STATUS. To know the calculation, please check the Evaluation Plan section.
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-course-modules" class="app-view">
+                <div class="section-label">Course Modules</div>
+                
+                <div class="modules-container">
+                    <div class="module-accordion-item collapsed" id="module-b1">
+                        <div class="module-header-trigger" onclick="toggleModuleAccordion('module-b1')">
+                            <i class="fas fa-chevron-down"></i>
+                            <h2>Block 1: Fundamentals of Object Art</h2>
+                        </div>
+                        <div class="module-content-collapsible">
+                            <div class="module-sub-item" onclick="alert('Downloading file: Conceptual Introductory Reading.pdf')">
+                                <i class="far fa-file-alt"></i>
+                                <span>Conceptual Introductory Reading</span>
+                            </div>
+                            <div class="module-sub-item" onclick="alert('Opening: Block 1 Diagnostic Quiz')">
+                                <i class="far fa-edit"></i>
+                                <span>Quick Quiz: Basic Concepts</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="module-accordion-item" id="module-b2" style="border: 1px solid #3b376e;">
+                        <div class="module-header-trigger" onclick="toggleModuleAccordion('module-b2')">
+                            <i class="fas fa-chevron-down" style="color: #b1adff;"></i>
+                            <h2>Block 2: Space, Installation, and Collective Interaction</h2>
+                        </div>
+                        
+                        <div class="module-content-collapsible">
+                            <div class="ai-assistant-panel" id="ai-panel-inner">
+                                <div class="ai-assistant-header" onclick="toggleAiPanel()">
+                                    <div class="ai-assistant-title">
+                                        <i class="fas fa-robot"></i>
+                                        <span>AI Study Assistant</span>
+                                    </div>
+                                    <i class="fas fa-chevron-down" id="ai-panel-chevron" style="font-size: 11px; color:#b1adff;"></i>
+                                </div>
+                                
+                                <div class="ai-assistant-body" id="ai-panel-body">
+                                    <div>
+                                        <div class="ai-subsection-title">Key concepts to reinforce:</div>
+                                        <ul>
+                                            <li>Phenomenological relationship between the viewer and large-scale installation.</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div>
+                                        <div class="ai-subsection-title">Recommended Reading:</div>
+                                        <a href="#" class="ai-download-link" onclick="event.preventDefault(); alert('Starting smart download of AI-optimized material: Space and Place in Installation.pdf')">
+                                            <i class="fas fa-book-open"></i> Space and Place in Installation.pdf
+                                        </a>
+                                    </div>
+                                    
+                                    <div class="ai-meta-row">
+                                        <span>Suggested study time: ~35 min</span>
+                                        <span>Exam Alignment: High</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="module-sub-item" onclick="alert('Opening video player: Olafur Eliasson Documentary Analysis')">
+                                <i class="fas fa-video"></i>
+                                <span>Video analysis: Olafur Eliasson Documentary</span>
+                            </div>
+                            <div class="module-sub-item" onclick="alert('Entering forum: The Aesthetic Experience in Three-Dimensional Environments')">
+                                <i class="far fa-comments"></i>
+                                <span>Discussion forum: The Aesthetic Experience</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-nav" id="app-bottom-nav">
+            <div class="nav-tab active-tab" id="tab-nav-dashboard" onclick="navigateToDashboardHome()">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </div>
+            <div class="nav-tab" id="tab-nav-calendar" onclick="alert('Simulation: Changing to Monthly Calendar view')">
+                <i class="far fa-calendar-alt"></i>
+                <span>Calendar</span>
+            </div>
+            <div class="nav-tab" id="tab-nav-todo" onclick="alert('Simulation: Opening global to-do items for the student')">
+                <i class="far fa-clipboard"></i>
+                <span>To Do</span>
+            </div>
+            <div class="nav-tab" id="tab-nav-notifications" onclick="alert('Simulation: Opening push Notification history')">
+                <i class="far fa-bell"></i>
+                <span>Notifications</span>
+            </div>
+            <div class="nav-tab" id="tab-nav-inbox" onclick="alert('Simulation: Loading Inbox (13 messages)')">
+                <i class="far fa-envelope"></i>
+                <span>Inbox</span>
+                <div class="nav-badge">13</div>
+            </div>
+        </div>
+
+        <div class="system-nav-bar">
+            <i class="fas fa-bars" style="transform: rotate(90deg);" onclick="navigateToDashboardHome()"></i>
+            <i class="far fa-circle" onclick="navigateToDashboardHome()"></i>
+            <i class="fas fa-chevron-left" onclick="handleHeaderBack()"></i>
+        </div>
+    </div>
+
+    <script>
+        let currentActiveView = 'dashboard';
+        const phoneContainer = document.getElementById('phone-container');
+
+        function updateHeaderIcon(showBackArrow) {
+            const hamburger = document.getElementById('icon-hamburger');
+            const arrow = document.getElementById('icon-back-arrow');
+            if (showBackArrow) {
+                if (hamburger) hamburger.style.display = 'none';
+                if (arrow) arrow.style.display = 'block';
+            } else {
+                if (hamburger) hamburger.style.display = 'block';
+                if (arrow) arrow.style.display = 'none';
+            }
+        }
+
+        function navigateToDashboardHome() {
+            currentActiveView = 'dashboard';
+            document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active-view'));
+            document.getElementById('view-dashboard').classList.add('active-view');
+            const header = document.getElementById('dynamic-header');
+            header.className = "app-header";
+            updateHeaderIcon(false);
+            document.getElementById('header-title-text').textContent = "Dashboard";
+            document.getElementById('header-subtitle-text').textContent = "";
+            toggleHeaderIcons(false);
+            phoneContainer.classList.add('with-local-nav');
+        }
+
+        function openCourseGrades() {
+            currentActiveView = 'grades-list';
+            document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active-view'));
+            document.getElementById('view-grades-list').classList.add('active-view');
+            const header = document.getElementById('dynamic-header');
+            header.className = "app-header pink-theme";
+            updateHeaderIcon(true);
+            document.getElementById('header-title-text').textContent = "Grades";
+            document.getElementById('header-subtitle-text').textContent = "Installation Art (Sec 302)";
+            toggleHeaderIcons(true);
+            phoneContainer.classList.remove('with-local-nav');
+        }
+
+        function openTaskDetails() {
+            currentActiveView = 'task-details';
+            document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active-view'));
+            document.getElementById('view-task-details').classList.add('active-view');
+            const header = document.getElementById('dynamic-header');
+            header.className = "app-header pink-theme";
+            updateHeaderIcon(true);
+            document.getElementById('header-title-text').textContent = "Assignment Details";
+            document.getElementById('header-subtitle-text').textContent = "Installation Art (Sec 302)";
+            toggleHeaderIcons(false);
+            phoneContainer.classList.remove('with-local-nav');
+        }
+
+        function openCourseModules() {
+            currentActiveView = 'course-modules';
+            document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active-view'));
+            document.getElementById('view-course-modules').classList.add('active-view');
+            const header = document.getElementById('dynamic-header');
+            header.className = "app-header pink-theme";
+            updateHeaderIcon(true);
+            document.getElementById('header-title-text').textContent = "Modules";
+            document.getElementById('header-subtitle-text').textContent = "Learning Course Content";
+            toggleHeaderIcons(true);
+            phoneContainer.classList.remove('with-local-nav');
+        }
+
+        function toggleModuleAccordion(id) {
+            const el = document.getElementById(id);
+            if (el) el.classList.toggle('collapsed');
+        }
+
+        // Toggle del bloque AI Assistant en la vista de Módulos
+        function toggleAiPanel() {
+            const panel = document.getElementById('ai-panel-inner');
+            if (panel) panel.classList.toggle('collapsed-ai');
+        }
+
+        function toggleHeaderIcons(show) {
+            document.getElementById('header-filter-icon').style.display = show ? 'inline-block' : 'none';
+            document.getElementById('header-search-icon').style.display = show ? 'inline-block' : 'none';
+        }
+
+        function handleHeaderBack() {
+            if (currentActiveView === 'dashboard') {
+                alert('Simulation: Opening main app menu options (Hamburger)...');
+            } else if (currentActiveView === 'course-modules') {
+                openTaskDetails();
+            } else if (currentActiveView === 'task-details') {
+                openCourseGrades();
+            } else if (currentActiveView === 'grades-list') {
+                navigateToDashboardHome();
+            }
+        }
+    </script>
+</body>
+</html>
